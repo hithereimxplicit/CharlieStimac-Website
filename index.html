@@ -1,4 +1,3 @@
-<script src="analytics.js"></script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,39 +7,66 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="header">
+  <header class="header reveal">
     <div class="container">
       <h1>Digital Communications Blog</h1>
       <p class="signature">Charlie Stimac</p>
 
-      <div class="header-meta">
+      <div class="header-meta reveal">
         <span class="pill">Weekly class posts + class reflections</span>
         <span class="pill pill-outline">Western University</span>
       </div>
+
+      <div class="hero-strip">
+        <div class="hero-card reveal">
+          <h3>About this blog</h3>
+          <p>
+            Weekly reflections on digital identity, platforms, and online culture for my Digital Communications course.
+          </p>
+        </div>
+
+        <div class="hero-card reveal">
+          <h3>This week’s focus</h3>
+          <ul>
+            <li>Privacy &amp; surveillance</li>
+            <li>Photography and identity</li>
+            <li>Tracking and platforms</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="scroll-cue reveal">Scroll</div>
     </div>
   </header>
 
   <main class="container">
-    <h2 class="section-title">Posts</h2>
+    <h2 class="section-title reveal">Posts</h2>
 
     <div class="post-list">
-      <!-- Newest post -->
-      <a class="post-card" href="posts/post1.html">
+      <a class="post-card reveal" href="posts/post1.html">
         <p class="date">Jan 26, 2026</p>
         <h3>
           Post 1: Seeing Ourselves Through Technology
           <span class="tag-new">NEW</span>
         </h3>
         <p class="preview">Chapter 6 reflection on tracking, visibility, and how platforms shape identity.</p>
-      </a>
 
+        <div class="card-meta">
+          <span class="chip">Chapter 6</span>
+          <span class="chip chip-outline">3 min read</span>
+        </div>
+      </a>
     </div>
   </main>
 
-  <footer class="footer">
+  <footer class="footer reveal">
     <div class="container">
       <p>© 2026 Charlie Stimac • Built for Digital Communications</p>
     </div>
   </footer>
+
+  <!-- Keep scripts at the bottom -->
+  <script src="site.js"></script>
+  <script src="analytics.js"></script>
 </body>
 </html>
