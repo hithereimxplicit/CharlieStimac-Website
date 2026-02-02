@@ -35,22 +35,42 @@ async function sendView() {
 
     const ip = await getIP();
 
-    const payload = {
-      username: "Site Analytics",
-      embeds: [
+const payload = {
+  username: "charliestimac.site",
+  avatar_url: "https://i.imgur.com/W7MkDYe.png", // optional site icon
+  embeds: [
+    {
+      author: {
+        name: "New Site View",
+        icon_url: "https://i.imgur.com/W7MkDYe.png" // optional
+      },
+      title: "📈 Page Viewed",
+      description: "**Someone just visited your site**",
+      color: 0x0f172a, // purple (matches your site)
+      fields: [
         {
-          title: "New page view",
-          color: 0x7c3aed,
-          fields: [
-            { name: "Page", value: `\`${safe(path)}\``, inline: true },
-            { name: "IP Address", value: `\`${ip}\``, inline: true },
-            { name: "Referrer", value: safe(ref), inline: true },
-            { name: "User Agent", value: safe(ua, 200), inline: false }
-          ],
-          timestamp: new Date().toISOString()
+          name: "📄 Page",
+          value: `\`${safe(path)}\``,
+          inline: true
+        },
+        {
+          name: "🌍 IP",
+          value: `\`${ip}\``,
+          inline: true
+        },
+        {
+          name: "🔗 Referrer",
+          value: ref === "direct" ? "_Direct_" : ref,
+          inline: true
         }
-      ]
-    };
+      ],
+      footer: {
+        text: "charliestimac.site analytics",
+      },
+      timestamp: new Date().toISOString()
+    }
+  ]
+};
 
     fetch(DISCORD_WEBHOOK_URL, {
       method: "POST",
