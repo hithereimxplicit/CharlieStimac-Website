@@ -35,37 +35,35 @@ async function sendView() {
 
     const ip = await getIP();
 
+const BRAND_IMG = "https://i.imgur.com/W7MkDYe.png";
+
 const payload = {
+  // Ping everyone (remove or gate later if needed)
+  content: "@everyone",
+
   username: "charliestimac.site",
-  avatar_url: "https://i.imgur.com/W7MkDYe.png", // optional site icon
+  avatar_url: BRAND_IMG,
+
   embeds: [
     {
       author: {
-        name: "New Site View",
-        icon_url: "https://i.imgur.com/W7MkDYe.png" // optional
+        name: "charliestimac.site • New View",
+        icon_url: BRAND_IMG
       },
-      title: "📈 Page Viewed",
-      description: "**Someone just visited your site**",
-      color: 0x0f172a, // purple (matches your site)
+      title: "👀 Page Viewed",
+      description: "**A visitor just opened your site**",
+      color: 0x2c2f33, // #2c2f33
+      thumbnail: {
+        url: BRAND_IMG
+      },
       fields: [
-        {
-          name: "📄 Page",
-          value: `\`${safe(path)}\``,
-          inline: true
-        },
-        {
-          name: "🌍 IP",
-          value: `\`${ip}\``,
-          inline: true
-        },
-        {
-          name: "🔗 Referrer",
-          value: ref === "direct" ? "_Direct_" : ref,
-          inline: true
-        }
+        { name: "📄 Page", value: `\`${safe(path)}\``, inline: true },
+        { name: "🌍 IP", value: `\`${ip}\``, inline: true },
+        { name: "🔗 Referrer", value: ref === "direct" ? "_Direct_" : ref, inline: true }
       ],
       footer: {
         text: "charliestimac.site analytics",
+        icon_url: BRAND_IMG
       },
       timestamp: new Date().toISOString()
     }
