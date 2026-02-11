@@ -1,0 +1,23 @@
+<input type="file" id="fileInput" />
+<button onclick="uploadFile()">Upload</button>
+
+<script>
+async function uploadFile() {
+  const file = document.getElementById("fileInput").files[0];
+  if (!file) return alert("Select a file");
+
+  const fd = new FormData();
+  fd.append("file", file);
+
+  const res = await fetch("/.netlify/functions/upload", {
+    method: "POST",
+    headers: {
+      "x-admin-key": "YOUR_ADMIN_KEY_HERE"
+    },
+    body: fd
+  });
+
+  const data = await res.json();
+  alert("Share link: " + window.location.origin + data.url);
+}
+</script>

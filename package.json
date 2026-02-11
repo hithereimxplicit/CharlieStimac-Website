@@ -1,0 +1,28 @@
+{
+  "name": "charliestimac-website-",
+  "version": "1.0.0",
+  "description": "",
+  "main": "analytics.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hithereimxplicit/CharlieStimac-Website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hithereimxplicit/CharlieStimac-Website/issues"
+  },
+  "homepage": "https://github.com/hithereimxplicit/CharlieStimac-Website#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.95.3",
+    "better-sqlite3": "^12.6.2",
+    "busboy": "^1.6.0",
+    "express": "^5.2.1",
+    "multer": "^2.0.2",
+    "nanoid": "^5.1.6"
+  }
+}
