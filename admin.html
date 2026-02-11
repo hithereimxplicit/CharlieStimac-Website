@@ -1,23 +1,89 @@
-<input type="file" id="fileInput" />
-<button onclick="uploadFile()">Upload</button>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Upload</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; padding: 24px; }
+    .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    input[type="password"], input[type="file"] { padding: 8px; }
+    button { padding: 10px 14px; cursor: pointer; }
+    #status { margin-top: 14px; white-space: pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+    .ok { color: #0a7a0a; }
+    .bad { color: #b00020; }
+  </style>
+</head>
+<body>
+  <h1>Private Upload</h1>
 
-<script>
-async function uploadFile() {
-  const file = document.getElementById("fileInput").files[0];
-  if (!file) return alert("Select a file");
+  <div class="row">
+    <label>
+      Admin key:
+      <input type="password" id="adminKey" placeholder="Enter ADMIN_KEY" />
+    </label>
 
-  const fd = new FormData();
-  fd.append("file", file);
+    <input type="file" id="fileInput" />
+    <button id="uploadBtn" type="button">Upload</button>
+  </div>
 
-  const res = await fetch("/.netlify/functions/upload", {
-    method: "POST",
-    headers: {
-      "x-admin-key": "YOUR_ADMIN_KEY_HERE"
-    },
-    body: fd
-  });
+  <div id="status">Choose a file, enter your admin key, then click Upload.</div>
 
-  const data = await res.json();
-  alert("Share link: " + window.location.origin + data.url);
-}
-</script>
+  <script>
+    const statusEl = document.getElementById("status");
+    const btn = document.getElementById("uploadBtn");
+
+    function setStatus(text, ok = true) {
+      statusEl.textContent = text;
+      statusEl.className = ok ? "ok" : "bad";
+    }
+
+    async function uploadFile() {
+      try {
+        const file = document.getElementById("fileInput").files[0];
+        const adminKey = document.getElementById("adminKey").value.trim();
+
+        if (!file) return setStatus("No file selected.", false);
+        if (!adminKey) return setStatus("Missing admin key. Paste the same ADMIN_KEY you set in Netlify env vars.", false);
+
+        btn.disabled = true;
+        setStatus("Uploading…");
+
+        const fd = new FormData();
+        fd.append("file", file);
+
+        const res = await fetch("/.netlify/functions/upload", {
+          method: "POST",
+          headers: { "x-admin-key": adminKey },
+          body: fd
+        });
+
+        const contentType = res.headers.get("content-type") || "";
+        const isJson = contentType.includes("application/json");
+
+        if (!res.ok) {
+          const errText = isJson ? JSON.stringify(await res.json(), null, 2) : await res.text();
+          return setStatus(`Upload failed (${res.status}).\n\n${errText}`, false);
+        }
+
+        const data = isJson ? await res.json() : { url: (await res.text()).trim() };
+        if (!data.url) return setStatus("Upload succeeded but no URL returned. Check function response.", false);
+
+        const full = window.location.origin + data.url;
+        setStatus(`Upload complete!\n\nOne-time link:\n${full}\n\n(Open it once; it should download then delete.)`, true);
+
+        // Copy to clipboard (best effort)
+        if (navigator.clipboard) {
+          try { await navigator.clipboard.writeText(full); } catch (e) {}
+        }
+      } catch (err) {
+        setStatus("Unexpected error:\n" + (err?.stack || err?.message || String(err)), false);
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    btn.addEventListener("click", uploadFile);
+  </script>
+</body>
+</html>
